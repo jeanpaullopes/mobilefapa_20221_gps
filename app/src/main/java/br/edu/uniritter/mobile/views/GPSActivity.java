@@ -3,11 +3,16 @@ package br.edu.uniritter.mobile.views;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
+import android.content.Context;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.location.LocationRequest;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -21,9 +26,10 @@ import br.edu.uniritter.mobile.buscasensores.R;
 
 public class GPSActivity extends AppCompatActivity {
     public static final String TAG = "GPSActivity";
-    private FusedLocationProviderClient fusedLocationClient;
+    //private FusedLocationProviderClient fusedLocationClient;
 
 
+    @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,36 +46,7 @@ public class GPSActivity extends AppCompatActivity {
                             Boolean coarseLocationGranted = result.getOrDefault(
                                     Manifest.permission.ACCESS_COARSE_LOCATION,false);
                             if (fineLocationGranted != null && fineLocationGranted) {
-                                // Localização precisa autorizada
-
-                                fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-                                fusedLocationClient.getLastLocation()
-                                        .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                                            @Override
-                                            public void onSuccess(Location location) {
-                                                Log.d(TAG, "onSuccess: "+location);
-                                            }
-                                        });
-
-                                fusedLocationClient.getCurrentLocation(LocationRequest.QUALITY_HIGH_ACCURACY,
-                                        new CancellationToken() {
-                                            @Override
-                                            public boolean isCancellationRequested() {
-                                                return false;
-                                            }
-
-                                            @NonNull
-                                            @Override
-                                            public CancellationToken onCanceledRequested(@NonNull OnTokenCanceledListener onTokenCanceledListener) {
-                                                return null;
-                                            }
-                                        })
-                                        .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                                            @Override
-                                            public void onSuccess(Location location) {
-                                                Log.d(TAG, "onSuccess current location: "+location);
-                                            }
-                                        });
+                               localizar();
 
                             } else if (coarseLocationGranted != null && coarseLocationGranted) {
                                 // Somente localização aproximada autorizada
@@ -86,4 +63,49 @@ public class GPSActivity extends AppCompatActivity {
                 Manifest.permission.ACCESS_COARSE_LOCATION
         });
     }
+
+
+     private void localizar() {
+
+         // Localização precisa autorizada
+         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0, new LocationListener() {
+             @Override
+             public void onLocationChanged(@NonNull Location location) {
+                 Log.d(TAG, "onLocationChanged: "+location);
+             }
+         });
+
+ /*        FusedLocationProviderClient fusedLocationClient;
+         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+         fusedLocationClient.getLastLocation()
+                 .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                     @Override
+                     public void onSuccess(Location location) {
+                         Log.d(TAG, "onSuccess: "+location);
+                     }
+                 });
+
+         fusedLocationClient.getCurrentLocation(LocationRequest.QUALITY_HIGH_ACCURACY,
+                 new CancellationToken() {
+                     @Override
+                     public boolean isCancellationRequested() {
+                         return false;
+                     }
+
+                     @NonNull
+                     @Override
+                     public CancellationToken onCanceledRequested(@NonNull OnTokenCanceledListener onTokenCanceledListener) {
+                         return null;
+                     }
+                 })
+                 .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                     @Override
+                     public void onSuccess(Location location) {
+                         Log.d(TAG, "onSuccess current location: "+location);
+                     }
+                 });
+                 */
+
+     }
 }
