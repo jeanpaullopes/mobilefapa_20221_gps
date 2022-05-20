@@ -9,6 +9,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final Integer DB_VERSION = 1;
 
     public DBHelper(Context context) {
+
         super(context, DB_NAME, null, DB_VERSION);
     }
     @Override

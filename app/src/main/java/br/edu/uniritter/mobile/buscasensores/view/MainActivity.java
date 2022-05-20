@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.hardware.Sensor;
@@ -17,6 +19,7 @@ import java.util.List;
 
 import br.edu.uniritter.mobile.buscasensores.R;
 import br.edu.uniritter.mobile.buscasensores.viewmodel.SensorsViewModel;
+import br.edu.uniritter.mobile.receiver.GPSBroadcastReceiver;
 import br.edu.uniritter.mobile.sqlite.DBHelper;
 import br.edu.uniritter.mobile.views.GPSActivity;
 
@@ -24,10 +27,19 @@ public class MainActivity extends AppCompatActivity {
 
     private SensorsViewModel viewmodel;
     int valor = 0;
+    BroadcastReceiver br;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        br = new GPSBroadcastReceiver();
+        IntentFilter intf = new IntentFilter("android.intent.action.AIRPLANE_MODE");
+        IntentFilter intf1 = new IntentFilter("android.intent.action.BOOT_COMPETED");
+
+        registerReceiver(br, intf);
+        registerReceiver(br, intf1);
+
+
 
         SharedPreferences preferences = getPreferences(MODE_PRIVATE);
 
@@ -77,6 +89,13 @@ public class MainActivity extends AppCompatActivity {
 
         DBHelper dbHelper = new DBHelper(this);
         SQLiteDatabase writableDatabase = dbHelper.getWritableDatabase();
-        
+
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //unregisterReceiver(br);
     }
 }

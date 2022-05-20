@@ -69,10 +69,11 @@ public class GPSActivity extends AppCompatActivity {
 
          // Localização precisa autorizada
          LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0, new LocationListener() {
+         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,5000,3, new LocationListener() {
              @Override
              public void onLocationChanged(@NonNull Location location) {
                  Log.d(TAG, "onLocationChanged: "+location);
+
              }
          });
 
