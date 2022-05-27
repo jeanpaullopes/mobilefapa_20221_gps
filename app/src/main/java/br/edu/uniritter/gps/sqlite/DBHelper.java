@@ -1,4 +1,4 @@
-package br.edu.uniritter.mobile.sqlite;
+package br.edu.uniritter.gps.sqlite;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

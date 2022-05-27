@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-
-
-
     <!-- Para localização sempre incluir esta permissão -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
     <!-- somente incluir se a app precise de localização precisa -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <!--Necessário se for usar localização em segundo plano
-           Android 10 (API level 29) e superiores. -->
+    <!--
+Necessário se for usar localização em segundo plano
+           Android 10 (API level 29) e superiores.
+    -->
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -20,34 +20,68 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BuscaSensores">
-
-        <receiver
-            android:name="br.edu.uniritter.mobile.receiver.GPSBroadcastReceiver"
-            android:exported="true"
-            >
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.AIRPLANE_MODE"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-
-            </intent-filter>
-
-        </receiver>
-        <service android:name="br.edu.uniritter.mobile.receiver.GPSService"
-            android:exported="true"/>
         <activity
-            android:name="br.edu.uniritter.mobile.views.GPSActivity"
-            android:exported="false" />
-        <activity
-            android:name=".view.MainActivity"
+            android:name="br.edu.uniritter.gps.gps.view.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+        </activity>
+        <activity
+            android:name="br.edu.uniritter.gps.gps.view.LandActivity"
+            android:exported="true" />
+
+        <receiver
+            android:name="br.edu.uniritter.gps.receiver.GPSBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.AIRPLANE_MODE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="br.edu.uniritter.GPS_START" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="br.edu.uniritter.gps.receiver.GPSService"
+            android:exported="true"
+            android:foregroundServiceType="location" />
+
+        <activity
+            android:name="br.edu.uniritter.gps.views.GPSActivity"
+            android:exported="false" />
+        <activity
+            android:name="br.edu.uniritter.gps.gps.view.MainActivity"
+            android:exported="true">
+
+
+            <!--
+            <intent-filter android:label="@string/filter_view_http_gizmos">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                  <data android:scheme="http"
+                   android:host="www.example.com"
+                   android:pathPrefix="/gizmos" />
+
+            </intent-filter>
+           <intent-filter android:label="@string/filter_view_example_gizmos">
+               <action android:name="android.intent.action.VIEW" />
+               <category android:name="android.intent.category.DEFAULT" />
+               <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="example"
+                   android:host="gizmos" />
+           </intent-filter>
+            -->
         </activity>
     </application>
 

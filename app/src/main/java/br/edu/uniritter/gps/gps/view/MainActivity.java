@@ -1,9 +1,12 @@
-package br.edu.uniritter.mobile.buscasensores.view;
+package br.edu.uniritter.gps.gps.view;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -11,17 +14,21 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.hardware.Sensor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.api.LogDescriptor;
+
 import java.util.List;
 
-import br.edu.uniritter.mobile.buscasensores.R;
-import br.edu.uniritter.mobile.buscasensores.viewmodel.SensorsViewModel;
-import br.edu.uniritter.mobile.receiver.GPSBroadcastReceiver;
-import br.edu.uniritter.mobile.sqlite.DBHelper;
-import br.edu.uniritter.mobile.views.GPSActivity;
+
+import br.edu.uniritter.atsd.gps.R;
+import br.edu.uniritter.gps.gps.viewmodel.SensorsViewModel;
+import br.edu.uniritter.gps.receiver.GPSBroadcastReceiver;
+import br.edu.uniritter.gps.sqlite.DBHelper;
+import br.edu.uniritter.gps.views.GPSActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,11 +40,41 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         br = new GPSBroadcastReceiver();
-        IntentFilter intf = new IntentFilter("android.intent.action.AIRPLANE_MODE");
+        IntentFilter intf = new IntentFilter("br.edu.uniritter.GPS_START");
         IntentFilter intf1 = new IntentFilter("android.intent.action.BOOT_COMPETED");
 
         registerReceiver(br, intf);
-        registerReceiver(br, intf1);
+
+        // é necessário solicitar permissão de acesso e
+        // informar no manifest o uso das permissões
+
+        ActivityResultLauncher<String[]> locationPermissionRequest =
+                registerForActivityResult(new ActivityResultContracts
+                                .RequestMultiplePermissions(), result -> {
+                            Boolean fineLocationGranted = result.getOrDefault(
+                                    Manifest.permission.ACCESS_FINE_LOCATION, false);
+                            Boolean coarseLocationGranted = result.getOrDefault(
+                                    Manifest.permission.ACCESS_COARSE_LOCATION,false);
+                    Boolean backgroundLocationGranted = result.getOrDefault(
+                            Manifest.permission.ACCESS_BACKGROUND_LOCATION,false);
+                            if (fineLocationGranted != null && fineLocationGranted && backgroundLocationGranted) {
+                                Log.d("MainActivity", "onCreate: autorizado GPS");
+
+                            } else if (coarseLocationGranted != null && coarseLocationGranted) {
+                                // Somente localização aproximada autorizada
+                            } else {
+                                // Nenhuma localização autorizada
+                            }
+                        }
+                );
+// Before you perform the actual permission request, check whether your app
+// already has the permissions, and whether your app needs to show a permission
+// rationale dialog. For more details, see Request permissions.
+        locationPermissionRequest.launch(new String[] {
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+        });
+        //registerReceiver(br, intf1);
 
 
 
@@ -70,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
                     TextView tv = new TextView(getBaseContext());
                     tv.setText(sensor.getName()+ " "+ sensor.getStringType());
                     layout.addView(tv);
+
                     ;
                 }
 
@@ -77,6 +115,9 @@ public class MainActivity extends AppCompatActivity {
         });
         findViewById(R.id.button2).setOnClickListener(view->{
             viewmodel.setNome("Jean Paul "+ valor++);
+            Intent intent = new Intent();
+            intent.setAction("br.edu.uniritter.GPS_START");
+            getApplicationContext().sendBroadcast(intent);
         });
         findViewById(R.id.btNext).setOnClickListener(new View.OnClickListener() {
             @Override

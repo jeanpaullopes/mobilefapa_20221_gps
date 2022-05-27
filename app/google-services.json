@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "11972327459",
+    "firebase_url": "https://poc-atsd-default-rtdb.firebaseio.com",
+    "project_id": "poc-atsd",
+    "storage_bucket": "poc-atsd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:11972327459:android:779c8c35fc57c87cb51996",
+        "android_client_info": {
+          "package_name": "br.edu.uniritter.atsd.gps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "11972327459-r0em0ine8ns5l7q91pr7ss52r0ea8f3u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtFBjSm2yqmA6lAI7vtVSTwUBi-vwC9h4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "11972327459-r0em0ine8ns5l7q91pr7ss52r0ea8f3u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

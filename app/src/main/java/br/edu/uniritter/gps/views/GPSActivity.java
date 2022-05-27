@@ -1,4 +1,4 @@
-package br.edu.uniritter.mobile.views;
+package br.edu.uniritter.gps.views;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -11,18 +11,11 @@ import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.location.LocationRequest;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.CancellationToken;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.OnTokenCanceledListener;
-
-import br.edu.uniritter.mobile.buscasensores.R;
+import br.edu.uniritter.atsd.gps.R;
 
 public class GPSActivity extends AppCompatActivity {
     public static final String TAG = "GPSActivity";
@@ -46,7 +39,7 @@ public class GPSActivity extends AppCompatActivity {
                             Boolean coarseLocationGranted = result.getOrDefault(
                                     Manifest.permission.ACCESS_COARSE_LOCATION,false);
                             if (fineLocationGranted != null && fineLocationGranted) {
-                               localizar();
+                                localizar();
 
                             } else if (coarseLocationGranted != null && coarseLocationGranted) {
                                 // Somente localização aproximada autorizada

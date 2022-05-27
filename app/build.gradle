@@ -1,12 +1,14 @@
 plugins {
     id 'com.android.application'
+    id 'com.google.gms.google-services'
+
 }
 
 android {
     compileSdk 31
 
     defaultConfig {
-        applicationId "br.edu.uniritter.mobile.buscasensores"
+        applicationId "br.edu.uniritter.atsd.gps"
         minSdk 28
         targetSdk 31
         versionCode 1
@@ -25,7 +27,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    namespace 'br.edu.uniritter.mobile.buscasensores'
+    namespace 'br.edu.uniritter.atsd.gps'
 }
 
 dependencies {
@@ -34,7 +36,15 @@ dependencies {
     implementation 'com.google.android.material:material:1.5.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
     implementation 'com.google.android.gms:play-services-location:18.0.0'
+    implementation 'com.google.firebase:firebase-database:20.0.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    implementation 'com.google.gms:google-services:4.3.10'
+    implementation platform('com.google.firebase:firebase-bom:30.0.2')
+    // Declare the dependencies for any other desired Firebase products
+    // For example, declare the dependencies for Firebase Authentication and Cloud Firestore
+    implementation 'com.google.firebase:firebase-auth'
+    implementation 'com.google.firebase:firebase-firestore'
+
 }

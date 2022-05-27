@@ -1,4 +1,4 @@
-package br.edu.uniritter.mobile.buscasensores;
+package br.edu.uniritter.gps.gps;
 
 import org.junit.Test;
 

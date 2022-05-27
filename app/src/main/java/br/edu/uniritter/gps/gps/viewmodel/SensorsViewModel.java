@@ -1,4 +1,4 @@
-package br.edu.uniritter.mobile.buscasensores.viewmodel;
+package br.edu.uniritter.gps.gps.viewmodel;
 
 import android.content.Context;
 import android.hardware.Sensor;
@@ -10,7 +10,6 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SensorsViewModel extends ViewModel {
