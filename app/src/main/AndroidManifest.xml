@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Para localização sempre incluir esta permissão -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!-- somente incluir se a app precise de localização precisa -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- somente incluir se a app precise de localização precisa -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!--
 Necessário se for usar localização em segundo plano
@@ -20,6 +19,12 @@ Necessário se for usar localização em segundo plano
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BuscaSensores">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCXYuf3TvWQ5hdB2Io9sRpeEHuzWJdVb6c" />
+        <activity
+            android:name="br.edu.uniritter.gps.gps.view.MapActivity"
+            android:exported="false" />
         <activity
             android:name="br.edu.uniritter.gps.gps.view.LoginActivity"
             android:exported="true">
@@ -28,7 +33,6 @@ Necessário se for usar localização em segundo plano
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name="br.edu.uniritter.gps.gps.view.LandActivity"
@@ -62,7 +66,6 @@ Necessário se for usar localização em segundo plano
         <activity
             android:name="br.edu.uniritter.gps.gps.view.MainActivity"
             android:exported="true">
-
 
             <!--
             <intent-filter android:label="@string/filter_view_http_gizmos">

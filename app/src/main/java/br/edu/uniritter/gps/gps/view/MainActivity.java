@@ -5,6 +5,8 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.content.BroadcastReceiver;
@@ -13,6 +15,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.hardware.Sensor;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,7 +28,10 @@ import java.util.List;
 
 
 import br.edu.uniritter.atsd.gps.R;
+import br.edu.uniritter.gps.gps.adapter.PosicaoAdapter;
+import br.edu.uniritter.gps.gps.adapter.PosicaoViewModel;
 import br.edu.uniritter.gps.gps.viewmodel.SensorsViewModel;
+import br.edu.uniritter.gps.receiver.Dados;
 import br.edu.uniritter.gps.receiver.GPSBroadcastReceiver;
 import br.edu.uniritter.gps.sqlite.DBHelper;
 import br.edu.uniritter.gps.views.GPSActivity;
@@ -44,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         IntentFilter intf1 = new IntentFilter("android.intent.action.BOOT_COMPETED");
 
         registerReceiver(br, intf);
+        registerReceiver(br, intf1);
 
         // é necessário solicitar permissão de acesso e
         // informar no manifest o uso das permissões
@@ -131,7 +138,24 @@ public class MainActivity extends AppCompatActivity {
         DBHelper dbHelper = new DBHelper(this);
         SQLiteDatabase writableDatabase = dbHelper.getWritableDatabase();
 
+        RecyclerView recyclerView =  findViewById(R.id.rvPosicao);
+        PosicaoAdapter adapter =  new PosicaoAdapter();
+        recyclerView.setLayoutManager( new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
 
+        PosicaoViewModel viewmodel = new ViewModelProvider(this).get(PosicaoViewModel.class);
+        //Dados.viewmodel = viewmodel;
+
+        Dados.getDados().observe(this, new Observer<List<Location>>() {
+            @Override
+            public void onChanged(List<Location> locations) {
+                adapter.refresh();
+            }
+        });
+        findViewById(R.id.buttonMap).setOnClickListener((v)->{
+            Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+            startActivity(intent);
+        });
     }
 
     @Override

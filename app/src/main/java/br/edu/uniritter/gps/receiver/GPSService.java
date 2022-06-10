@@ -19,6 +19,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleService;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -28,7 +32,12 @@ import com.google.android.gms.location.LocationRequest;
 
 import com.google.android.gms.tasks.Task;
 
-public class GPSService extends Service {
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
+import br.edu.uniritter.gps.gps.adapter.PosicaoViewModel;
+
+public class GPSService extends LifecycleService {
 
     public static final String TAG = "GPService";
     LocationManager locationManager;
@@ -115,12 +124,12 @@ public class GPSService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
         //Toast.makeText(GPSService.this, "onStartCommand", Toast.LENGTH_LONG).show();
-        /* fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         LocationRequest currentLocationRequest = LocationRequest.create();
-        currentLocationRequest.setInterval(2000)
-                .setFastestInterval(0)
-                .setMaxWaitTime(0)
+        currentLocationRequest.setInterval(5000)
+                .setMaxWaitTime(10000)
                 .setSmallestDisplacement(0)
+                .setFastestInterval(3000)
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -139,24 +148,40 @@ public class GPSService extends Service {
                         super.onLocationResult(locationResult);
                         float distancia = 0;
                         Location loc = locationResult.getLastLocation();
-                        Dados.dados.add(loc.toString());
-                        Log.d(TAG, "onLocationResult: vou gravar");
-                        //Dados.gravar(loc);
-                        Log.d(TAG, "onLocationResult: gravei");
+                        /*
+                        BigDecimal bd = new BigDecimal(loc.getLatitude());
+                        BigDecimal latR = bd.setScale(4, RoundingMode.FLOOR);
+                        bd = new BigDecimal(loc.getLongitude());
+                        BigDecimal lonR = bd.setScale(4, RoundingMode.FLOOR);
+                        loc.setLatitude(latR.doubleValue());
+                        loc.setLongitude(lonR.doubleValue());
+
+                        Log.d(TAG, "result");
+                        for(Location l : locationResult.getLocations()) {
+                            Log.d(TAG, "->"+l);
+
+                        }
+                        */
                         if (lastLoc != null) {
                             distancia = loc.distanceTo(lastLoc);
+                        } else {
+                            lastLoc = loc;
                         }
-                        lastLoc = loc;
+                        Dados.gravar(loc, distancia);
+                        Log.d(TAG, "onLocationResult: gravei");
+                        if (distancia > loc.getAccuracy()) {
+                            lastLoc = loc;
+                        }
 
-                        Log.w(TAG, "onLocationResult: " + distancia + "m acc:" + loc.getAccuracy());
-                        Toast.makeText(GPSService.this, distancia + "m", Toast.LENGTH_SHORT).show();
+                       // Log.w(TAG, "onLocationResult: " + distancia + "m acc:" + loc.getAccuracy());
+                        //Toast.makeText(GPSService.this, distancia + "m", Toast.LENGTH_SHORT).show();
                     }
                 }, null);
 
-         */
+       /*
 
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,10000,0, new LocationListener() {
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,4000,0, new LocationListener() {
             @Override
             public void onLocationChanged(@NonNull Location location) {
                 float distancia = 0;
@@ -168,13 +193,17 @@ public class GPSService extends Service {
                 if (lastLoc != null) {
                     distancia = loc.distanceTo(lastLoc);
                 }
+                if (distancia < loc.getAccuracy()) {
+                    distancia = 0;
+                }
                 lastLoc = loc;
-
                 Log.w(TAG, "onLocationResult: " + distancia + "m acc:" + loc.getAccuracy());
-                Toast.makeText(GPSService.this, distancia + "m", Toast.LENGTH_SHORT).show();
+                Toast.makeText(GPSService.this, distancia + "m acc: "+ loc.getAccuracy(), Toast.LENGTH_SHORT).show();
 
             }
         });
+
+        */
         Log.w(TAG, "onStartCommand ");
 
 

@@ -18,6 +18,8 @@ public class GPSBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.w(TAG, "onReceive: "+intent.getAction());
+        Intent intentPosBoot = new Intent();
+        intentPosBoot.setAction("br.edu.uniritter.GPS_START");
         Intent intent1 = new Intent(context,GPSService.class);
         Intent intent2 = new Intent(context, LandActivity.class);
         Toast.makeText(context, "onReceive", Toast.LENGTH_LONG).show();
@@ -34,21 +36,28 @@ public class GPSBroadcastReceiver extends BroadcastReceiver {
             PendingIntent pendingIntent =
                     PendingIntent.getForegroundService(context, 0, intent1,
                             PendingIntent.FLAG_IMMUTABLE);
+            //PendingIntent pendingIntent =
+            //        PendingIntent.getForegroundService(context, 0, intentPosBoot,
+            //                PendingIntent.FLAG_IMMUTABLE);
 
 
             Notification notification =
                     new Notification.Builder(context,"UniR")
                             .setContentTitle("Projeto de Mobile")
                             .setContentText("Clique aqui para iniciar a app")
+
                             .setContentIntent(pendingIntent)
                             .setSmallIcon(android.R.mipmap.sym_def_app_icon)
                             .setAutoCancel(true)
                             .build();
             manager.notify(666, notification);
             Log.d(TAG, "onReceive: notification enviada");
-        } else {
+        }
+        if (intent.getAction().equals("br.edu.uniritter.GPS_START")) {
+
             intent1.putExtra("boot", false);
             context.startForegroundService(intent1);
+
         }
     }
 }

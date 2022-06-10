@@ -2,6 +2,8 @@ package br.edu.uniritter.gps.receiver;
 
 import android.location.Location;
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
@@ -13,9 +15,25 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import br.edu.uniritter.gps.gps.adapter.PosicaoViewModel;
+
 public class Dados {
-    public static List<String> dados = new ArrayList<>();
-    public static void gravar(Location loc) {
+    private static MutableLiveData<List<Location>> dados = new MutableLiveData<>();
+    //public static PosicaoViewModel viewmodel;
+
+    public static  MutableLiveData<List<Location>> getDados() {
+        if (dados.getValue() == null) {
+            dados.setValue(new ArrayList<>());
+        }
+        return dados;
+    }
+    public static void gravar(Location loc, float dist) {
+        int d = (int) dist;
+        Dados.dados.getValue().add(loc);
+        dados.setValue(dados.getValue());
+        //if (viewmodel != null) {
+        //    viewmodel.addLocation(loc);
+        //}
         /*FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
 
