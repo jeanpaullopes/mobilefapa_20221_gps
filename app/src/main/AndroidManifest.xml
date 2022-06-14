@@ -21,7 +21,7 @@ Necessário se for usar localização em segundo plano
         android:theme="@style/Theme.BuscaSensores">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCXYuf3TvWQ5hdB2Io9sRpeEHuzWJdVb6c" />
+            android:value="${MAPS_API_KEY}" />
         <activity
             android:name="br.edu.uniritter.gps.gps.view.MapActivity"
             android:exported="false" />
