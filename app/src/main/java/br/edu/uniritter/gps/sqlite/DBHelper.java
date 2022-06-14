@@ -6,10 +6,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DBHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "BancoDeDados";
-    private static final Integer DB_VERSION = 1;
+    private static final Integer DB_VERSION = 2;
 
     public DBHelper(Context context) {
-
         super(context, DB_NAME, null, DB_VERSION);
     }
     @Override
@@ -20,8 +19,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int currentVersion) {
-        String stm = "alter table alunos add fone text;";
+        String stm = "create table localizacoes (id integer primary key, lat real, lng real, time integer, enviado integer);";
         if (oldVersion == 0) {
+            //sqLiteDatabase.execSQL(stm);
+        }
+        if (oldVersion == 1) {
             sqLiteDatabase.execSQL(stm);
         }
     }

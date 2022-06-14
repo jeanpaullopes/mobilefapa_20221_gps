@@ -1,14 +1,12 @@
-package br.edu.uniritter.gps.gps.view;
+package br.edu.uniritter.gps.views;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -17,16 +15,14 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import br.edu.uniritter.atsd.gps.R;
-import br.edu.uniritter.gps.gps.adapter.PosicaoViewModel;
-import br.edu.uniritter.gps.receiver.Dados;
+import br.edu.uniritter.gps.repositorios.PosicaoRepository;
+
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
     private SupportMapFragment mapFragment;
@@ -48,13 +44,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
         googleMap.setIndoorEnabled(true);
         googleMap.setMyLocationEnabled(true);
-        Dados.getDados().observe(this, new Observer<List<Location>>() {
-            @Override
-            public void onChanged(List<Location> locations) {
-                if (locations.size() > 0) {
-                    onNewPoint(locations);
-                }
-            }
+        PosicaoRepository.getInstance().getPosicoes().observe(this,
+                new Observer<List<Location>>() {
+                    @Override
+                    public void onChanged(List<Location> locations) {
+                        if (locations.size() > 0) {
+                            onNewPoint(locations);
+                        }
+                    }
         });
 
 

@@ -1,4 +1,4 @@
-package br.edu.uniritter.gps.gps.view;
+package br.edu.uniritter.gps.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 
-import br.edu.uniritter.gps.receiver.GPSService;
+import br.edu.uniritter.gps.services.GPSService;
 import br.edu.uniritter.atsd.gps.R;
 
 public class LandActivity extends AppCompatActivity {

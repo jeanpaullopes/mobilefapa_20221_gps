@@ -1,4 +1,4 @@
-package br.edu.uniritter.gps.gps.adapter;
+package br.edu.uniritter.gps.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import br.edu.uniritter.atsd.gps.R;
-import br.edu.uniritter.gps.receiver.Dados;
+import br.edu.uniritter.gps.repositorios.PosicaoRepository;
 
 public class PosicaoAdapter extends RecyclerView.Adapter {
 
@@ -35,12 +35,12 @@ public class PosicaoAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ((TextView)holder.itemView.findViewById(R.id.tvPosicao)).setText(
-                Dados.getDados().getValue().get(position).toString());
+                PosicaoRepository.getInstance().getPosicoes().getValue().get(position).toString());
     }
 
     @Override
     public int getItemCount() {
-        return Dados.getDados().getValue().size();
+        return PosicaoRepository.getInstance().getPosicoes().getValue().size();
     }
     public void refresh() {
         this.notifyDataSetChanged();

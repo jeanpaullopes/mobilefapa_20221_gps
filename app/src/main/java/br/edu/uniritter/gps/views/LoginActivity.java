@@ -1,4 +1,4 @@
-package br.edu.uniritter.gps.gps.view;
+package br.edu.uniritter.gps.views;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;

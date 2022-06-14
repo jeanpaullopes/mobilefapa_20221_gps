@@ -1,4 +1,4 @@
-package br.edu.uniritter.gps.gps.adapter;
+package br.edu.uniritter.gps.viewmodel;
 
 import android.location.Location;
 

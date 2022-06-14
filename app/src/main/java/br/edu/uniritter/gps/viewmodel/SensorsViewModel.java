@@ -1,4 +1,4 @@
-package br.edu.uniritter.gps.gps.viewmodel;
+package br.edu.uniritter.gps.viewmodel;
 
 import android.content.Context;
 import android.hardware.Sensor;
